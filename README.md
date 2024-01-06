@@ -54,3 +54,9 @@ Dependency updates
 | Command                | Description |
 |------------------------|-------------|
 | `http -v ':8083/todo'` | TODO        |
+
+```bash
+http -v POST ":8080/camel/api/positions" \
+Content-Type:application/json \
+< src/test/resources/position-one.json
+```

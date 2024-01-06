@@ -1,0 +1,73 @@
+### health endpoint
+GET http://localhost:8080/actuator/health
+
+> {%
+    client.assert(response.status === 200, "Wrong response status");
+%}
+
+### Create valid position
+POST http://localhost:8080/camel/api/positions
+Content-Type: application/json
+
+< src/test/resources/position.json
+
+> {%
+    client.assert(response.status === 201, "Wrong response status");
+%}
+
+### Invalid position.deviceId format
+POST http://localhost:8080/camel/api/positions
+Content-Type: application/json
+
+< src/test/resources/position-invalid.json
+
+> {%
+    client.assert(response.status === 400, "Wrong response status");
+%}
+
+### Missing position
+POST http://localhost:8080/camel/api/positions
+Content-Type: application/json
+
+> {%
+    client.assert(response.status === 400, "Wrong response status");
+%}
+
+
+### Missing position properties
+POST http://localhost:8080/camel/api/positions
+Content-Type: application/json
+
+< src/test/resources/position-empty.json
+
+> {%
+    client.assert(response.status === 400, "Wrong response status");
+%}
+
+### Invalid position coordinates positive
+POST http://localhost:8080/camel/api/positions
+Content-Type: application/json
+
+< src/test/resources/position-invalid-pos-coords.json
+
+> {%
+    client.assert(response.status === 400, "Wrong response status");
+%}
+
+### Invalid position coordinates negative
+POST http://localhost:8080/camel/api/positions
+Content-Type: application/json
+
+< src/test/resources/position-invalid-neg-coords.json
+
+> {%
+    client.assert(response.status === 400, "Wrong response status");
+%}
+
+
+
+
+### Get message by IDoc number
+#@idoc=0000000114333159
+#GET http://localhost:8080/abalink/api/v1/ui/messages/{{idoc}}
+
