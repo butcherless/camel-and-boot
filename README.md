@@ -60,3 +60,8 @@ http -v POST ":8080/camel/api/positions" \
 Content-Type:application/json \
 < src/test/resources/position-one.json
 ```
+
+
+## Links
+
+- https://medium.com/@paulkunda/setting-up-h2-for-testing-in-spring-boot-245d3a98e405
