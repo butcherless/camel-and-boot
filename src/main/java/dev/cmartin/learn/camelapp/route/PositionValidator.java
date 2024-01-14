@@ -11,7 +11,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+
+import static dev.cmartin.learn.camelapp.route.ProcessorUtils.getBody;
 
 public class PositionValidator
         implements Processor {
@@ -19,17 +20,15 @@ public class PositionValidator
 
     @Override
     public void process(Exchange exchange) throws Exception {
-        var position = exchange.getMessage().getBody(Position.class);
+        var position = getBody(exchange, Position.class);
         this.logger.debug("validating {}", position);
 
         var errors = new Validator().validate(position);
 
         this.logger.debug("errors {}", errors);
 
-        if (!errors.isEmpty()) {
-            var errorList = errors.stream().collect(Collectors.joining(",", "[", "]"));
-            throw new InvalidPositionException(errorList);
-        }
+
+        ProcessorUtils.handleErrors(errors, InvalidPositionException.class);
     }
 
     /**
@@ -41,7 +40,7 @@ public class PositionValidator
             var errors = new ArrayList<String>();
 
             if (Objects.isNull(position)) {
-                errors.add("missing resource");
+                errors.add("missing position");
                 return errors;
             }
 

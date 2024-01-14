@@ -1,11 +1,13 @@
 package dev.cmartin.learn.camelapp.route;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import dev.cmartin.learn.camelapp.api.Model.Device;
 import dev.cmartin.learn.camelapp.api.Model.InvalidPositionException;
 import dev.cmartin.learn.camelapp.api.Model.Position;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.ValueBuilder;
+import org.apache.camel.component.kafka.KafkaConstants;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,23 +29,55 @@ public class RestRoute
         ;
 
         rest("/api")
+                // POSITION
                 .post("/positions")
-                .apiDocs(true)
-                .routeId("rest-positions")
+                .routeId("post-position")
                 .description("create a device position")
                 .consumes(MediaType.APPLICATION_JSON_VALUE)
                 .type(Position.class)
                 .to(RouteNames.CREATE_POSITION_ENDPOINT)
+                // DEVICE
+                .post("/devices")
+                .routeId("post-device")
+                .description("create a device")
+                .consumes(MediaType.APPLICATION_JSON_VALUE)
+                .type(Device.class)
+                .to(RouteNames.CREATE_DEVICE_ENDPOINT)
         ;
 
         from(RouteNames.CREATE_POSITION_ENDPOINT)
-                .routeId("create-position-route")
+                .routeId("create-position")
                 .log("received data: ${body}")
                 .bean(PositionValidator.class)
-                //.onException(InvalidPositionException.class).bean(InvalidPositionHandler.class)
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, buildCreatedCode())
                 .setBody(buildEmptyBody())
         ;
+
+        from(RouteNames.CREATE_DEVICE_ENDPOINT)
+                .routeId("create-device")
+                .log("received data: ${body}")
+                .bean(DeviceValidator.class)
+                .setHeader(KafkaConstants.KEY, simple("${body.id}"))
+                .setBody(simple("${body}"))
+                .to("kafka:devices?brokers=localhost:29092")
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, buildCreatedCode())
+                .setBody(buildEmptyBody())
+                //.setBody(constant("mi-primo"))
+                //.to("direct:my-log-1") // multiple endpoints call test
+                //.to("direct:my-log-2")
+        ;
+
+
+        from("direct:my-log-1")
+                .routeId("log-1")
+                .log("${body}")
+        ;
+
+        from("direct:my-log-2")
+                .routeId("log-2")
+                .log("${body}")
+        ;
+
     }
 
     private ValueBuilder buildEmptyBody() {

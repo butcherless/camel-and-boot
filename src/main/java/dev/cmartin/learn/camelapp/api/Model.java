@@ -4,6 +4,17 @@ import java.time.Instant;
 import java.util.UUID;
 
 public interface Model {
+    enum DeviceType {
+        PLANE, ENGINE
+    }
+
+    record Device(
+            UUID id,
+            DeviceType type,
+            String description
+    ) {
+    }
+
     record Position(
             Double longitude,
             Double latitude,
@@ -18,5 +29,10 @@ public interface Model {
         }
     }
 
+    class InvalidDeviceException extends RuntimeException {
+        public InvalidDeviceException(final String message) {
+            super(message);
+        }
+    }
 
 }

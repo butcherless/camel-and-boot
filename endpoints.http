@@ -65,6 +65,16 @@ Content-Type: application/json
 %}
 
 
+### Create valid device
+POST http://localhost:8080/camel/api/devices
+Content-Type: application/json
+
+< src/test/resources/device.json
+
+> {%
+    client.assert(response.status === 201, "Wrong response status");
+%}
+
 
 
 ### Get message by IDoc number

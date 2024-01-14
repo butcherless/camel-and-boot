@@ -28,10 +28,16 @@ Check _Java_ and _Maven_ versions:
 
 ## Useful commands
 
+Create kafka topic via IntelliJ Kafka plugin:
+
+- new connection on port: `29092`
+- new topic: `devices`
+- start consumer
+
 Run the microservice:
 
 ```bash
-  java -jar target/microservice-two-0.0.1-SNAPSHOT.jar
+  java -jar target/camel-app-0.0.1-SNAPSHOT.jar
 ```
 
 Dependency list
@@ -48,12 +54,7 @@ Dependency updates
 
 ## HTTP client commands [`httpie`]
 
-> **[TODO]:** complete commands
-
-
-| Command                | Description |
-|------------------------|-------------|
-| `http -v ':8083/todo'` | TODO        |
+[http client tests](./endpoints.http)
 
 ```bash
 http -v POST ":8080/camel/api/positions" \
@@ -61,7 +62,7 @@ Content-Type:application/json \
 < src/test/resources/position-one.json
 ```
 
-
 ## Links
 
 - https://medium.com/@paulkunda/setting-up-h2-for-testing-in-spring-boot-245d3a98e405
+- [Guide to Setting Up Apache Kafka Using Docker](https://www.baeldung.com/ops/kafka-docker-setup)
