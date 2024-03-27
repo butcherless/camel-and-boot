@@ -2,6 +2,7 @@ package dev.cmartin.learn.camelapp.route;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import dev.cmartin.learn.camelapp.api.Model;
+import dev.cmartin.learn.camelapp.api.Model.InvalidPositionException;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ public class InvalidPositionHandler
         var exception = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
 
         var detail = switch (exception) {
-            case Model.InvalidPositionException ex -> ex.getMessage();
+            case InvalidPositionException ex -> ex.getMessage();
             case InvalidFormatException ex -> ex.getMessage();
             default -> "unknown error";
         };

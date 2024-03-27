@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class RestRoute
         extends RouteBuilder {
 
+
     @Override
     public void configure() {
         this.configureExceptionHandling();
@@ -55,16 +56,14 @@ public class RestRoute
 
         from(RouteNames.CREATE_DEVICE_ENDPOINT)
                 .routeId("create-device")
-                .log("received data: ${body}")
+                .log("received data: ${body.id}")
                 .bean(DeviceValidator.class)
-                .setHeader(KafkaConstants.KEY, simple("${body.id}"))
-                .setBody(simple("${body}"))
+                .bean(DeviceConverter.class)
                 .to("kafka:devices?brokers=localhost:29092")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, buildCreatedCode())
                 .setBody(buildEmptyBody())
-                //.setBody(constant("mi-primo"))
-                //.to("direct:my-log-1") // multiple endpoints call test
-                //.to("direct:my-log-2")
+        //.to("direct:my-log-1") // multiple endpoints call test
+        //.to("direct:my-log-2")
         ;
 
 

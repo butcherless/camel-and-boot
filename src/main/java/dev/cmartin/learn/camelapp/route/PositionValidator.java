@@ -27,7 +27,6 @@ public class PositionValidator
 
         this.logger.debug("errors {}", errors);
 
-
         ProcessorUtils.handleErrors(errors, InvalidPositionException.class);
     }
 

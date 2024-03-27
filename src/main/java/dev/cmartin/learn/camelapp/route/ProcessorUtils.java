@@ -12,6 +12,9 @@ public class ProcessorUtils {
         return exchange.getMessage().getBody(clazz);
     }
 
+    public static <T> void setBody(Exchange exchange, String payload) {
+        exchange.getMessage().setBody(payload);
+    }
 
     public static <T extends RuntimeException> void handleErrors(final List<String> errors, final Class<T> clazz)
             throws NoSuchMethodException,
