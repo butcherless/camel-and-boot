@@ -14,7 +14,7 @@ Goals:
 
 Tech stack:
 
-- Apache Camel 4.3.x
+- Apache Camel 4.x
 - Spring Boot 3.2.x
 - Java 21
 
