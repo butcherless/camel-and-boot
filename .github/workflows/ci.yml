@@ -30,7 +30,7 @@ jobs:
         run: ./mvnw -B -V compile
       - name: test
         run: ./mvnw -B test
-#      - name: integration-test
-#        run: ./mvnw -B integration-test -Dunit.test.skip
+      - name: integration-test
+        run: ./mvnw -B verify -Dskip.ut=true
       - name: package
         run: ./mvnw package -DskipTests
