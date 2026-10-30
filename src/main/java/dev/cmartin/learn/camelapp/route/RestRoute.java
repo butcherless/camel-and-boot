@@ -59,7 +59,7 @@ public class RestRoute
                 .log("received data: ${body.id}")
                 .bean(DeviceValidator.class)
                 .bean(DeviceConverter.class)
-                .to("kafka:devices?brokers=localhost:29092")
+                .to("kafka:devices?brokers={{kafka.brokers}}")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, buildCreatedCode())
                 .setBody(buildEmptyBody())
         //.to("direct:my-log-1") // multiple endpoints call test

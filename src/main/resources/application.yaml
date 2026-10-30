@@ -24,3 +24,5 @@ camel:
     jackson:
       pretty-print: true
       auto-discover-object-mapper: true
+kafka:
+  brokers: localhost:29092
